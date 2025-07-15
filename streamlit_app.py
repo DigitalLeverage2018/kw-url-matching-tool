@@ -8,7 +8,7 @@ from openai import OpenAI
 from tqdm import tqdm
 
 # --- Seiteneinstellungen & Header ---
-st.set_page_config(page_title="🔗 Keyword-URL Matching Tool", layout="wide")
+st.set_page_config(page_title="Keyword-URL Matching Tool", layout="wide")
 st.title("🔗 Keyword-URL Matching Tool")
 
 with st.expander("ℹ️ Was macht dieses Tool?", expanded=True):
