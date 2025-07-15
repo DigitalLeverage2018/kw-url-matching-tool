@@ -39,12 +39,15 @@ st.subheader("⬆️ Inhalte & Keywords hochladen")
 content_file = st.file_uploader("1. Lade die Datei mit den Webseiteninformatione hoch.", type="csv")
 st.markdown("""📄 **Erwartetes Format**  
 Die Datei muss folgende Spalten enthalten:  
-- `**Spalte 1:** URL`  
-- `**Spalte 2:** Title Tag`  
-- `**Spalte 3:** Meta Description`  
-- `**Spalte 4:** Content`""", unsafe_allow_html=True)
+**Spalte 1:** URL`  
+**Spalte 2:** Title Tag`  
+**Spalte 3:** Meta Description`  
+**Spalte 4:** Content`""", unsafe_allow_html=True)
 
 keywords_file = st.file_uploader("2. Lade die Datei mit den Keywords hoch", type="csv")
+
+# --- Visueller Trenner ---
+st.markdown("""<hr style='margin-top: 2rem; margin-bottom: 2rem;'>""", unsafe_allow_html=True)
 st.markdown("""🗝️ **Erwartetes Format**  
 **Spalte 1**: Keywords in a2:a.  
 """, unsafe_allow_html=True)
