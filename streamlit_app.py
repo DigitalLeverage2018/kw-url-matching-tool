@@ -38,7 +38,7 @@ client = OpenAI(api_key=api_key)
 st.subheader("⬆️ Inhalte & Keywords hochladen")
 
 st.markdown("### 🗂️ 1. Lade die Datei mit den Webseiteninformationen hoch")
-content_file = st.file_uploader("", type="csv")
+content_file = st.file_uploader("content_upload", type="csv", label_visibility="collapsed")
 st.markdown("""📄 **Erwartetes Format:**  
 **Spalte 1:** URL  
 **Spalte 2:** Title Tag  
@@ -47,7 +47,7 @@ st.markdown("""📄 **Erwartetes Format:**
 """, unsafe_allow_html=True)
 
 st.markdown("### 📝 2. Lade die Datei mit den Keywords hoch")
-keywords_file = st.file_uploader("", type="csv")
+keywords_file = st.file_uploader("keywords_upload", type="csv", label_visibility="collapsed")
 st.markdown("""🗝️ **Erwartetes Format:**  
 **Spalte 1:** Keyword (beginnend in Zeile 2)  
 """, unsafe_allow_html=True)
