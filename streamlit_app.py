@@ -14,7 +14,7 @@ st.title("🔗 Keyword-URL Matching Tool")
 with st.expander("ℹ️ Was macht dieses Tool?", expanded=True):
     st.markdown(
         """
-        Dieses Tool berechnet die semantische Ähnlichkeit zwischen deinen Webseiten (inkl. Title, Meta & Content) und einer Liste an Keywords.
+        Dieses Tool berechnet die semantische Ähnlichkeit zwischen deinen Webseiten (basierend auf. Title Tag Meta Description & Body Content) und einer Liste an Keywords.
         Du bekommst zwei Resultate als CSV:
 
         1. **Die am besten passenden URLs für jedes Keyword**
@@ -36,27 +36,30 @@ client = OpenAI(api_key=api_key)
 
 # --- Datei Upload ---
 st.subheader("⬆️ Inhalte & Keywords hochladen")
-content_file = st.file_uploader("1. Lade die Datei *content.csv* hoch (mit Spalten: URL, Title Tag, Meta Description, Content)", type="csv")
-st.markdown("""📄 **Erwartetes Format für content.csv:**  
+content_file = st.file_uploader("1. Lade die Datei mit den Webseiteninformatione hoch.", type="csv")
+st.markdown("""📄 **Erwartetes Format**  
 Die Datei muss folgende Spalten enthalten:  
-- `URL`  
-- `Title Tag`  
-- `Meta Description`  
-- `Content`  
-Jede Zeile entspricht einer analysierbaren Seite.""", unsafe_allow_html=True)
+- `**Spalte 1:** URL`  
+- `**Spalte 2:** Title Tag`  
+- `**Spalte 3:** Meta Description`  
+- `**Spalte 4:** Content`""", unsafe_allow_html=True)
 
-keywords_file = st.file_uploader("2. Lade die Datei *keywords.csv* hoch (mit Spalte: Keyword)", type="csv")
-st.markdown("""🗝️ **Erwartetes Format für keywords.csv:**  
-Die Datei muss eine Spalte `Keyword` enthalten.  
-Jede Zeile enthält ein einzelnes Keyword zur Analyse.""", unsafe_allow_html=True)
+keywords_file = st.file_uploader("2. Lade die Datei mit den Keywords hoch", type="csv")
+st.markdown("""🗝️ **Erwartetes Format**  
+**Spalte 1**: Keywords in a2:a.  
+""", unsafe_allow_html=True)
 
 # --- Einstellungen ---
 st.subheader("⚙️ Einstellungen")
 max_urls = st.number_input("🔢 Maximale URLs pro Keyword (0 = unbegrenzt)", min_value=0, value=3)
 max_keywords = st.number_input("🔢 Maximale Keywords pro URL (0 = unbegrenzt)", min_value=0, value=3)
 threshold = st.slider("📈 Similarity-Threshold", min_value=0.0, max_value=1.0, value=0.7, step=0.01)
+model = st.selectbox("🤖 Embedding-Modell wählen", ["text-embedding-3-small", "text-embedding-3-large"], index=1)
 
-if not content_file or not keywords_file:
+# --- Analyse starten Button ---
+start = st.button("🚀 Analyse starten")
+
+if not (api_key and content_file and keywords_file and start):
     st.stop()
 
 # --- Tokenizer & Embedding Funktion ---
@@ -67,7 +70,7 @@ def truncate(text):
     tokens = encoding.encode(text)
     return encoding.decode(tokens[:MAX_TOKENS]) if len(tokens) > MAX_TOKENS else text
 
-def get_embedding(text, model="text-embedding-3-large"):
+def get_embedding(text):
     text = text.replace("\n", " ").strip()
     try:
         response = client.embeddings.create(input=[text], model=model)
