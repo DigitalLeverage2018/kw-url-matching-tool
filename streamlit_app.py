@@ -17,8 +17,8 @@ with st.expander("ℹ️ Was macht dieses Tool?", expanded=True):
         Dieses Tool berechnet die semantische Ähnlichkeit zwischen deinen Webseiten (basierend auf. Title Tag Meta Description & Body Content) und einer Liste an Keywords.
         Du bekommst zwei Resultate als CSV:
 
-        1. **Die am besten passenden URLs für jedes Keyword**
-        2. **Die am besten passenden Keywords für jede URL**
+        1. Die am besten passenden URLs für jedes Keyword
+        2. Die am besten passenden Keywords für jede URL
 
         **Wichtig:** Die Berechnung basiert auf OpenAI-Embeddings. Kontrolliere die Resultate kritisch.
         """
@@ -36,20 +36,18 @@ client = OpenAI(api_key=api_key)
 
 # --- Datei Upload ---
 st.subheader("⬆️ Inhalte & Keywords hochladen")
-content_file = st.file_uploader("1. Lade die Datei mit den Webseiteninformatione hoch.", type="csv")
-st.markdown("""📄 **Erwartetes Format**  
-Die Datei muss folgende Spalten enthalten:  
-**Spalte 1:** URL`  
-**Spalte 2:** Title Tag`  
-**Spalte 3:** Meta Description`  
-**Spalte 4:** Content`""", unsafe_allow_html=True)
+
+content_file = st.file_uploader("1. Lade die Datei mit den Webseiteninformationen hoch", type="csv")
+st.markdown("""📄 **Erwartetes Format:**  
+**Spalte 1:** URL  
+**Spalte 2:** Title Tag  
+**Spalte 3:** Meta Description  
+**Spalte 4:** Content  
+""", unsafe_allow_html=True)
 
 keywords_file = st.file_uploader("2. Lade die Datei mit den Keywords hoch", type="csv")
-
-# --- Visueller Trenner ---
-st.markdown("""<hr style='margin-top: 2rem; margin-bottom: 2rem;'>""", unsafe_allow_html=True)
-st.markdown("""🗝️ **Erwartetes Format**  
-**Spalte 1**: Keywords in a2:a.  
+st.markdown("""🗝️ **Erwartetes Format:**  
+**Spalte 1:** Keyword (beginnend in Zeile 2)  
 """, unsafe_allow_html=True)
 
 # --- Einstellungen ---
