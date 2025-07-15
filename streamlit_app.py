@@ -114,9 +114,12 @@ keyword_embeddings = np.vstack(df_keywords["embedding"].values)
 similarities = cosine_similarity(keyword_embeddings, page_embeddings)
 
 # --- Ergebnis 1: URLs pro Keyword ---
+progress_kw = st.progress(0, text="🔍 Vergleiche Keywords mit URLs")
 st.subheader("📄 1. Beste URLs pro Keyword")
 rows_kw_url = []
+total_kw = len(df_keywords)
 for i, kw in enumerate(df_keywords["keyword"]):
+    progress_kw.progress((i + 1) / total_kw, text=f"🔍 Keyword {i + 1} von {total_kw}: {kw}")
     sim_row = similarities[i]
     top_idxs = sim_row.argsort()[::-1]
     count = 0
@@ -133,9 +136,12 @@ st.dataframe(df_kw_url)
 st.download_button("📥 CSV herunterladen (Keywords → URLs)", df_kw_url.to_csv(index=False).encode("utf-8"), "1_keywords_to_urls.csv")
 
 # --- Ergebnis 2: Keywords pro URL ---
+progress_url = st.progress(0, text="🔍 Vergleiche URLs mit Keywords")
 st.subheader("📄 2. Beste Keywords pro URL")
 rows_url_kw = []
+total_urls = len(df_content)
 for j, page_url in enumerate(df_content["url"]):
+    progress_url.progress((j + 1) / total_urls, text=f"🔍 URL {j + 1} von {total_urls}: {page_url}")
     sim_column = similarities[:, j]
     top_idxs = sim_column.argsort()[::-1]
     count = 0
@@ -150,3 +156,4 @@ for j, page_url in enumerate(df_content["url"]):
 df_url_kw = pd.DataFrame(rows_url_kw)
 st.dataframe(df_url_kw)
 st.download_button("📥 CSV herunterladen (URLs → Keywords)", df_url_kw.to_csv(index=False).encode("utf-8"), "2_urls_to_keywords.csv")
+
